@@ -1,0 +1,4 @@
+pygame>=2.5.0
+# Opcional: solo si quieres reproducir un demo.mp4 propio (sin audio) en lugar de la
+# demostración animada integrada. Aumenta bastante el tamaño del .exe.
+# opencv-python>=4.8
