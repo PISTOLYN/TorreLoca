@@ -189,3 +189,13 @@ def bloque(celda, color, brillo=1.0):
         pygame.draw.circle(s, BLANCO, (celda // 2, celda // 2), max(2, celda // 10))
         _sprites[clave] = s
     return s
+
+
+def reiniciar_cache():
+    """Descarta fuentes y superficies guardadas (necesario si pygame se reinicia, p. ej. en pruebas)."""
+    global _fondo, _logo
+    _fuentes.clear()
+    _cache_texto.clear()
+    _sprites.clear()
+    _fondo = None
+    _logo = None
