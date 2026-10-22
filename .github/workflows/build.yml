@@ -1,0 +1,59 @@
+name: Compilar TORRE LOCA
+
+on:
+  push:
+    branches: [main, master]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+
+      - name: Pruebas (pygame real, pantalla y sonido virtuales)
+        run: python -m unittest discover -s tests -v
+
+      - name: Generar TorreLoca.exe
+        run: pyinstaller --noconfirm --clean --onefile --windowed --name TorreLoca --add-data "assets;assets" main.py
+
+      - name: Generar InstalarTorreLoca.exe
+        shell: pwsh
+        run: |
+          if (-not (Get-Command iscc -ErrorAction SilentlyContinue) -and -not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup -y --no-progress
+          }
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          & $iscc installer\TorreLoca.iss
+          if (-not (Test-Path dist\InstalarTorreLoca.exe)) { throw "No se genero el instalador" }
+
+      - name: Guardar resultados
+        uses: actions/upload-artifact@v4
+        with:
+          name: TorreLoca-Windows
+          path: |
+            dist/TorreLoca.exe
+            dist/InstalarTorreLoca.exe
+
+      - name: Publicar Release (solo con etiqueta vX.Y.Z)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/TorreLoca.exe
+            dist/InstalarTorreLoca.exe
