@@ -20,8 +20,9 @@ SEG_YA = 0.8            # tiempo que se muestra "¡YA!"
 
 class Juego:
     def __init__(self, cfg=None):
-        pygame.mixer.pre_init(22050, -16, 1, 512)
+                pygame.mixer.pre_init(22050, -16, 1, 512)
         pygame.init()
+        g.reiniciar_cache()
         pygame.display.set_caption("TORRE LOCA - Desafíos Locos")
         self.cfg = cfg or Configuracion()
         self.reloj = pygame.time.Clock()
