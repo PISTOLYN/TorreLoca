@@ -1,0 +1,8 @@
+Carpeta de recursos de TORRE LOCA (todo es opcional; el juego trae valores integrados)
+
+logo.png            Logo que aparece entre los dos tableros (ya incluido: DESAFIOS LOCOS).
+sonidos/*.wav       Para reemplazar los sonidos sintetizados. Nombres reconocidos:
+                    inicio, cuenta, ya, apilar, fallo, menu, reinicio, victoria
+demo.mp4            Video demostrativo. Se busca primero junto a TorreLoca.exe y luego aqui.
+                    Si no existe (o no esta OpenCV), se muestra la demostracion animada integrada.
+icono.ico           Si existe, build.bat lo usa como icono de TorreLoca.exe.
